@@ -22,9 +22,6 @@ USER_TYPE_CHOICES = (
 )
 
 
-# Create your models here.
-
-
 class UserManager(BaseUserManager):
     """
     Миксин для управления пользователями
@@ -109,7 +106,7 @@ class Shop(models.Model):
                                 on_delete=models.CASCADE)
     state = models.BooleanField(verbose_name='статус получения заказов', default=True)
 
-    # filename
+    filename = models.FileField()
 
     class Meta:
         verbose_name = 'Магазин'
@@ -264,7 +261,7 @@ class OrderItem(models.Model):
 
 
 class ConfirmEmailToken(models.Model):
-    objects = models.manager.Manager()
+    # objects = models.manager.Manager()
     class Meta:
         verbose_name = 'Токен подтверждения Email'
         verbose_name_plural = 'Токены подтверждения Email'
