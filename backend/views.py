@@ -20,6 +20,7 @@ from backend.models import Shop, Category, Product, ProductInfo, Parameter, Prod
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
     OrderItemSerializer, OrderSerializer, ContactSerializer
 from backend.signals import new_user_registered, new_order
+from drf_spectacular.utils import extend_schema
 
 
 class RegisterAccount(APIView):
@@ -28,6 +29,12 @@ class RegisterAccount(APIView):
     """
 
     # Регистрация методом POST
+
+    @extend_schema(
+        request=UserSerializer,
+        responses={200: UserSerializer},
+        description='Регистрация нового пользователя',
+    )
 
     def post(self, request, *args, **kwargs):
         """
@@ -72,6 +79,11 @@ class ConfirmAccount(APIView):
     """
     Класс для подтверждения почтового адреса
     """
+    @extend_schema(
+        request=ConfirmEmailToken,
+        responses={200: ConfirmEmailToken}, 
+        description='Подтверждает почтовый адрес пользователя',
+    )
 
     # Регистрация методом POST
     def post(self, request, *args, **kwargs):
@@ -113,6 +125,12 @@ class AccountDetails(APIView):
     """
 
     # получить данные
+
+    @extend_schema(
+        responses={200: UserSerializer},
+        description='Получить данные пользователя',
+    )
+
     def get(self, request: Request, *args, **kwargs):
         """
                Retrieve the details of the authenticated user.
@@ -130,6 +148,13 @@ class AccountDetails(APIView):
         return Response(serializer.data)
 
     # Редактирование методом POST
+
+    @extend_schema(
+        request=UserSerializer,
+        responses={200: UserSerializer},
+        description='Редактирование данных пользователя',
+    )
+
     def post(self, request, *args, **kwargs):
         """
                 Update the account details of the authenticated user.
@@ -173,6 +198,13 @@ class LoginAccount(APIView):
     """
 
     # Авторизация методом POST
+
+    @extend_schema(
+        request= {'email':'string', 'password':'string'},
+        responses={200: Token},
+        description='Авторизация пользователя',
+  
+    )
     def post(self, request, *args, **kwargs):
         """
                 Authenticate a user.
@@ -213,6 +245,7 @@ class ShopView(ListAPIView):
     serializer_class = ShopSerializer
 
 
+
 class ProductInfoView(APIView):
     """
         A class for searching products.
@@ -223,6 +256,11 @@ class ProductInfoView(APIView):
         Attributes:
         - None
         """
+
+    @extend_schema(
+        responses={200: ProductInfoSerializer(many=True)},
+        description='Получить информацию о продуктах',
+    )
 
     def get(self, request: Request, *args, **kwargs):
         """
@@ -270,6 +308,10 @@ class BasketView(APIView):
     """
 
     # получить корзину
+    @extend_schema(
+        responses={200: OrderSerializer(many=True)},
+        description='Получить корзину',
+    )
     def get(self, request, *args, **kwargs):
         """
                 Retrieve the items in the user's basket.
@@ -292,6 +334,12 @@ class BasketView(APIView):
         return Response(serializer.data)
 
     # редактировать корзину
+    @extend_schema(
+        request=OrderItemSerializer(many=True),
+        responses={200: OrderSerializer(many=True)},
+        description='Редактировать корзину',
+    )
+
     def post(self, request, *args, **kwargs):
         """
                Add an items to the user's basket.
@@ -333,6 +381,12 @@ class BasketView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # удалить товары из корзины
+    @extend_schema(
+        request=OrderItemSerializer(many=True),
+        responses={200: OrderSerializer(many=True)},
+        description='Удалить товары из корзины',
+    )
+
     def delete(self, request, *args, **kwargs):
         """
                 Remove  items from the user's basket.
@@ -363,6 +417,12 @@ class BasketView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # добавить позиции в корзину
+    @extend_schema(
+        request=OrderItemSerializer(many=True),
+        responses={200: OrderSerializer(many=True)},
+        description='Добавить позиции в корзину',
+    )
+
     def put(self, request, *args, **kwargs):
         """
                Update the items in the user's basket.
@@ -469,8 +529,14 @@ class PartnerState(APIView):
 
        Attributes:
        - None
-       """
+       """    
     # получить текущий статус
+
+    @extend_schema(
+        responses={200: ShopSerializer}, 
+        description='Получить текущий статус', 
+    )
+
     def get(self, request, *args, **kwargs):
         """
                Retrieve the state of the partner.
@@ -527,7 +593,10 @@ class PartnerOrders(APIView):
     Attributes:
     - None
     """
-
+    @extend_schema(
+        responses={200: OrderSerializer(many=True)}, 
+        description='Получить заказы',
+    )
     def get(self, request, *args, **kwargs):
         """
                Retrieve the orders associated with the authenticated partner.
@@ -567,7 +636,10 @@ class ContactView(APIView):
        Attributes:
        - None
        """
-
+    @extend_schema(
+        responses={200: ContactSerializer(many=True)}, 
+        description='Получить контакты',
+    )
     # получить мои контакты
     def get(self, request, *args, **kwargs):
         """
@@ -587,6 +659,12 @@ class ContactView(APIView):
         return Response(serializer.data)
 
     # добавить новый контакт
+    @extend_schema(
+        request=ContactSerializer,
+        responses={200: ContactSerializer}, 
+        description='Добавить контакт',
+    )
+
     def post(self, request, *args, **kwargs):
         """
                Create a new contact for the authenticated user.
@@ -643,6 +721,12 @@ class ContactView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # редактировать контакт
+    @extend_schema(
+        request=ContactSerializer,
+        responses={200: ContactSerializer}, 
+        description='Редактировать контакт',
+    )
+
     def put(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             """
@@ -685,6 +769,10 @@ class OrderView(APIView):
     """
 
     # получить мои заказы
+    @extend_schema(
+        responses={200: OrderSerializer(many=True)}, 
+        description='Получить заказы',
+    )
     def get(self, request, *args, **kwargs):
         """
                Retrieve the details of user orders.
@@ -707,6 +795,11 @@ class OrderView(APIView):
         return Response(serializer.data)
 
     # разместить заказ из корзины
+    @extend_schema(
+        request=OrderItemSerializer(many=True),
+        responses={200: OrderSerializer(many=True)},
+        description='Разместить заказ из корзины',
+    )
     def post(self, request, *args, **kwargs):
         """
                Put an order and send a notification.

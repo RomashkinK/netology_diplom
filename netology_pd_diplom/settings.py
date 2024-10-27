@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'backend',
     'widget_tweaks',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -148,12 +149,26 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
 
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
         'rest_framework.authentication.TokenAuthentication',
     ),
 
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API магазина',
+    'DESCRIPTION': 'API сервиса заказа товаров',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
