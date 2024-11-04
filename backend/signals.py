@@ -10,7 +10,7 @@ from django_rest_passwordreset.signals import reset_password_token_created
 
 from backend.models import ConfirmEmailToken, User
 
-from tasks import send_email
+from backend.tasks import send_email
 
 new_user_registered = Signal('user_id')
 

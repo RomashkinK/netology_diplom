@@ -30,11 +30,11 @@ class RegisterAccount(APIView):
 
     # Регистрация методом POST
 
-    @extend_schema(
-        request=UserSerializer,
-        responses={200: UserSerializer},
-        description='Регистрация нового пользователя',
-    )
+    # @extend_schema(
+    #     request=UserSerializer,
+    #     responses={200: UserSerializer},
+    #     description='Регистрация нового пользователя',
+    # )
 
     def post(self, request, *args, **kwargs):
         """
@@ -79,11 +79,11 @@ class ConfirmAccount(APIView):
     """
     Класс для подтверждения почтового адреса
     """
-    @extend_schema(
-        request=ConfirmEmailToken,
-        responses={200: ConfirmEmailToken}, 
-        description='Подтверждает почтовый адрес пользователя',
-    )
+    # @extend_schema(
+    #     request=ConfirmEmailToken,
+    #     responses={200: ConfirmEmailToken}, 
+    #     description='Подтверждает почтовый адрес пользователя',
+    # )
 
     # Регистрация методом POST
     def post(self, request, *args, **kwargs):
@@ -126,10 +126,10 @@ class AccountDetails(APIView):
 
     # получить данные
 
-    @extend_schema(
-        responses={200: UserSerializer},
-        description='Получить данные пользователя',
-    )
+    # @extend_schema(
+    #     responses={200: UserSerializer},
+    #     description='Получить данные пользователя',
+    # )
 
     def get(self, request: Request, *args, **kwargs):
         """
@@ -149,11 +149,11 @@ class AccountDetails(APIView):
 
     # Редактирование методом POST
 
-    @extend_schema(
-        request=UserSerializer,
-        responses={200: UserSerializer},
-        description='Редактирование данных пользователя',
-    )
+    # @extend_schema(
+    #     request=UserSerializer,
+    #     responses={200: UserSerializer},
+    #     description='Редактирование данных пользователя',
+    # )
 
     def post(self, request, *args, **kwargs):
         """
@@ -199,12 +199,12 @@ class LoginAccount(APIView):
 
     # Авторизация методом POST
 
-    @extend_schema(
-        request= {'email':'string', 'password':'string'},
-        responses={200: Token},
-        description='Авторизация пользователя',
-  
-    )
+    # @extend_schema(
+    #     request= {'email':'string', 'password':'string'},
+    #     responses={200: Token},
+    #     description='Авторизация пользователя',
+    # )
+
     def post(self, request, *args, **kwargs):
         """
                 Authenticate a user.
@@ -257,10 +257,10 @@ class ProductInfoView(APIView):
         - None
         """
 
-    @extend_schema(
-        responses={200: ProductInfoSerializer(many=True)},
-        description='Получить информацию о продуктах',
-    )
+    # @extend_schema(
+    #     responses={200: ProductInfoSerializer(many=True)},
+    #     description='Получить информацию о продуктах',
+    # )
 
     def get(self, request: Request, *args, **kwargs):
         """
@@ -308,10 +308,12 @@ class BasketView(APIView):
     """
 
     # получить корзину
-    @extend_schema(
-        responses={200: OrderSerializer(many=True)},
-        description='Получить корзину',
-    )
+
+    # @extend_schema(
+    #     responses={200: OrderSerializer(many=True)},
+    #     description='Получить корзину',
+    # )
+
     def get(self, request, *args, **kwargs):
         """
                 Retrieve the items in the user's basket.
@@ -334,11 +336,11 @@ class BasketView(APIView):
         return Response(serializer.data)
 
     # редактировать корзину
-    @extend_schema(
-        request=OrderItemSerializer(many=True),
-        responses={200: OrderSerializer(many=True)},
-        description='Редактировать корзину',
-    )
+    # @extend_schema(
+    #     request=OrderItemSerializer(many=True),
+    #     responses={200: OrderSerializer(many=True)},
+    #     description='Редактировать корзину',
+    # )
 
     def post(self, request, *args, **kwargs):
         """
@@ -381,11 +383,11 @@ class BasketView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # удалить товары из корзины
-    @extend_schema(
-        request=OrderItemSerializer(many=True),
-        responses={200: OrderSerializer(many=True)},
-        description='Удалить товары из корзины',
-    )
+    # @extend_schema(
+    #     request=OrderItemSerializer(many=True),
+    #     responses={200: OrderSerializer(many=True)},
+    #     description='Удалить товары из корзины',
+    # )
 
     def delete(self, request, *args, **kwargs):
         """
@@ -417,11 +419,11 @@ class BasketView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # добавить позиции в корзину
-    @extend_schema(
-        request=OrderItemSerializer(many=True),
-        responses={200: OrderSerializer(many=True)},
-        description='Добавить позиции в корзину',
-    )
+    # @extend_schema(
+    #     request=OrderItemSerializer(many=True),
+    #     responses={200: OrderSerializer(many=True)},
+    #     description='Добавить позиции в корзину',
+    # )
 
     def put(self, request, *args, **kwargs):
         """
@@ -532,10 +534,10 @@ class PartnerState(APIView):
        """    
     # получить текущий статус
 
-    @extend_schema(
-        responses={200: ShopSerializer}, 
-        description='Получить текущий статус', 
-    )
+    # @extend_schema(
+    #     responses={200: ShopSerializer}, 
+    #     description='Получить текущий статус', 
+    # )
 
     def get(self, request, *args, **kwargs):
         """
@@ -593,10 +595,11 @@ class PartnerOrders(APIView):
     Attributes:
     - None
     """
-    @extend_schema(
-        responses={200: OrderSerializer(many=True)}, 
-        description='Получить заказы',
-    )
+    # @extend_schema(
+    #     responses={200: OrderSerializer(many=True)}, 
+    #     description='Получить заказы',
+    # )
+
     def get(self, request, *args, **kwargs):
         """
                Retrieve the orders associated with the authenticated partner.
@@ -636,10 +639,11 @@ class ContactView(APIView):
        Attributes:
        - None
        """
-    @extend_schema(
-        responses={200: ContactSerializer(many=True)}, 
-        description='Получить контакты',
-    )
+    # @extend_schema(
+    #     responses={200: ContactSerializer(many=True)}, 
+    #     description='Получить контакты',
+    # )
+
     # получить мои контакты
     def get(self, request, *args, **kwargs):
         """
@@ -659,11 +663,11 @@ class ContactView(APIView):
         return Response(serializer.data)
 
     # добавить новый контакт
-    @extend_schema(
-        request=ContactSerializer,
-        responses={200: ContactSerializer}, 
-        description='Добавить контакт',
-    )
+    # @extend_schema(
+    #     request=ContactSerializer,
+    #     responses={200: ContactSerializer}, 
+    #     description='Добавить контакт',
+    # )
 
     def post(self, request, *args, **kwargs):
         """
@@ -721,11 +725,11 @@ class ContactView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # редактировать контакт
-    @extend_schema(
-        request=ContactSerializer,
-        responses={200: ContactSerializer}, 
-        description='Редактировать контакт',
-    )
+    # @extend_schema(
+    #     request=ContactSerializer,
+    #     responses={200: ContactSerializer}, 
+    #     description='Редактировать контакт',
+    # )
 
     def put(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -769,10 +773,11 @@ class OrderView(APIView):
     """
 
     # получить мои заказы
-    @extend_schema(
-        responses={200: OrderSerializer(many=True)}, 
-        description='Получить заказы',
-    )
+    # @extend_schema(
+    #     responses={200: OrderSerializer(many=True)}, 
+    #     description='Получить заказы',
+    # )
+
     def get(self, request, *args, **kwargs):
         """
                Retrieve the details of user orders.
@@ -795,11 +800,12 @@ class OrderView(APIView):
         return Response(serializer.data)
 
     # разместить заказ из корзины
-    @extend_schema(
-        request=OrderItemSerializer(many=True),
-        responses={200: OrderSerializer(many=True)},
-        description='Разместить заказ из корзины',
-    )
+    # @extend_schema(
+    #     request=OrderItemSerializer(many=True),
+    #     responses={200: OrderSerializer(many=True)},
+    #     description='Разместить заказ из корзины',
+    # )
+
     def post(self, request, *args, **kwargs):
         """
                Put an order and send a notification.
