@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from baton.ai import AIModels
+# from baton.ai import AIModels
 # import django
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'backend',
     'widget_tweaks',
     'drf_spectacular',
+    'easy_thumbnails',
     'silk',
     'baton',
     'baton.autodiscover',
@@ -223,7 +224,7 @@ BATON = {
     'GRAVATAR_DEFAULT_IMG': 'retro',
     'GRAVATAR_ENABLED': True,
     'FORCE_THEME': None,
-    'LOGIN_SPLASH': 'https://i.ytimg.com/vi/PaQuuB88SVY/maxresdefault.jpg',
+    'LOGIN_SPLASH': 'https://i.pinimg.com/originals/36/8c/61/368c6164370c3726248594334bb16568.jpg',
     'SEARCH_FIELD': {
         'label': 'Search contents...',
         'url': '/search/',
