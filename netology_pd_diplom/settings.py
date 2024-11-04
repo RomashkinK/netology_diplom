@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from baton.ai import AIModels
 # import django
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'drf_spectacular',
     'silk',
+    'baton',
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -200,5 +203,50 @@ CELERY_IMPORTS = ('backend.tasks', )
 # MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'media'))
 # IMAGES_DIR = os.path.join(MEDIA_ROOT, 'images')
 
+BATON = {
+    'SITE_HEADER': 'API магазина',
+    'SITE_TITLE': 'API магазина',
+    'INDEX_TITLE': 'API магазина',
+    'SUPPORT_URL': 'https://github.com/RomashkinK/netology_diplom/',
+    'COPYRIGHT': 'copyright © 2024 <a href="https://github.com/RomashkinK/netology_diplom/">API магазина</a>',
+    'POWERED_BY': '<a href="https://github.com/RomashkinK/netology_diplom/">RomashkinK</a>',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': True,
+    'CHANGELIST_FILTERS_FORM': True,
+    'COLLAPSE_USER_AREA': False,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Menu',
+    'MASSAGES_TOAST': False,
+    'GRAVATAR_DEFAULT_IMG': 'retro',
+    'GRAVATAR_ENABLED': True,
+    'FORCE_THEME': None,
+    'LOGIN_SPLASH': 'https://i.ytimg.com/vi/PaQuuB88SVY/maxresdefault.jpg',
+    'SEARCH_FIELD': {
+        'label': 'Search contents...',
+        'url': '/search/',
+    },
+    'MENU': (
+        { 'type': 'title', 'label': 'main', 'apps': ('auth', 'backend') },
+        {
+            'type': 'app',
+            'name': 'auth',
+            'label': 'Authentication and Authorization',
+            'models': (
+                'auth.*',
+            )
+        },
+        {
+            'type': 'app',
+            'name': 'backend',
+            'label': 'API',
+            'models': (
+                'backend.*',
+            )
+        },
+    ),
+}
 
 
