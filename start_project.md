@@ -28,3 +28,8 @@
     
     
     python3 manage.py runserver 
+
+
+## **Для Silk**
+    
+    python3 manage.py collectstatic 
