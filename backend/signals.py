@@ -11,6 +11,7 @@ from django_rest_passwordreset.signals import reset_password_token_created
 from backend.models import ConfirmEmailToken, User
 
 from backend.tasks import send_email
+from celery import shared_task
 
 new_user_registered = Signal('user_id')
 
@@ -21,7 +22,7 @@ def send_email(subject, message, from_email, to_email):
     msg.send()
 
 
-@receiver(reset_password_token_created)
+@shared_task()
 def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
     # """
     # Отправляем письмо с токеном для сброса пароля
@@ -53,7 +54,6 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
 
 
 
-@receiver(post_save, sender=User)
 # def new_user_registered_signal(sender: Type[User], instance: User, created: bool, **kwargs):
     # """
     #  отправляем письмо с подтрердждением почты
@@ -73,17 +73,17 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
     #         [instance.email]
     #     )
     #     msg.send()
-def new_user_registered_signal(user_id, **kwargs):
-    token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user_id)
+@shared_task()
+def new_user_registered_signal(user_id: int, **kwargs):
+    user = User.objects.get(id=user_id)
+    subject = f'Подтверждение регистрации {user.email}'
+    to = [user.email,]
+    body = f'Вы успешно зарегистрировались.'
+    message = EmailMultiAlternatives(subject=subject, body=body, from_email=settings.EMAIL_HOST_USER, to=to)
+    message.send()
 
-    subject = f'Подтверждение регистрации {token.user.email}'
-    message = token.key
-    from_email = settings.EMAIL_HOST_USER
-    to_email = token.user.email
-    send_email.delay(subject, message, from_email, to_email)
-
-@receiver(new_order)
-def new_order_signal(user_id, **kwargs):
+@shared_task()
+def new_order_signal(user_id:int, **kwargs):
     # """
     # отправяем письмо при изменении статуса заказа
     # """
@@ -101,9 +101,9 @@ def new_order_signal(user_id, **kwargs):
     #     [user.email]
     # )
     # msg.send()
-
-    subject = f'Обновление статуса заказа'
-    message = 'Заказ сформирован'
-    from_email = settings.EMAIL_HOST_USER
-    to_email = User.objects.get(id=user_id).email
-    send_email.delay(subject, message, from_email, to_email)
+    user = User.objects.get(id=user_id)
+    subject = f'Подтверждение заказа'
+    to = [user.email]
+    body = f'Заказ сформирован'
+    message = EmailMultiAlternatives(subject=subject, body=body, from_email=settings.EMAIL_HOST_USER, to=to)
+    message.send()
