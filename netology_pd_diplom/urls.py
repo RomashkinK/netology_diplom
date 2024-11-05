@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/v1/', include('backend.urls', namespace='backend')),
     path('silk/', include('silk.urls', namespace='silk')),
     path('oauth/', include('social_django.urls', namespace='social')),
+
     # path('social/', include('social.apps.django_app.urls', namespace='social')),
     # path('', TemplateView.as_view(template_name='index.html'), name='index'),
     # path('accounts/', include('allauth.urls')),
